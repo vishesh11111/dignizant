@@ -5,14 +5,19 @@
  */
 
 var app = require('../app');
+var express = require("express");
 var debug = require('debug')('server:server');
 var http = require('http');
+var cors = require("cors");
+const connect = require("../configs/db");
+connect();
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+app.use(cors());
+var port = normalizePort(process.env.PORT || '4000');
 app.set('port', port);
 
 /**

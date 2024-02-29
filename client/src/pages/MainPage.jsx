@@ -4,8 +4,11 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import './css/mainpage.css';
 import { DropDown } from './DropDown';
 import { Button } from '@mui/material';
+import CancelIcon from '@mui/icons-material/Cancel';
+import axios from "axios"
+import { AllUrl } from '../Api/Api';
 
-export const MainPage = () => {
+export const MainPage = ({click}) => {
     const [state, setState] = useState({
         inpt: 'Untitled form',
         inpt2: "Form description"
@@ -50,9 +53,26 @@ export const MainPage = () => {
         setAddData([...AddData, data]);
     }
 
+    const handleSaveData = async() =>{
+        let ApiData = {
+            email: JSON.parse(localStorage.getItem("user")).email,
+            data: AddData,
+            title: state.inpt,
+            description: state.inpt2
+        }
+        try {
+            const result= await axios.post(AllUrl.createPost, ApiData)
+            console.log(result);
+        } catch (error) {
+            console.log(error);
+        }
+        console.log("00000",ApiData);
+    }
+
     console.log("--", AddData)
     return (
         <div>
+            <Button onClick={click}>Cancel<CancelIcon/></Button>
             <div className='main-01'>
                 <div className='main-02'>
                     <div className='main-inp1'>
@@ -92,7 +112,7 @@ export const MainPage = () => {
                 </div>
             </div>
             <DropDown data={AddData} setData={setAddData} />
-            <Button variant='contained' >Submit</Button>
+            <Button variant='contained' onClick={handleSaveData}>Submit</Button>
         </div>
     );
 };
